@@ -1,0 +1,490 @@
+Notes for C++
+
+- When making a new program. the.vscode file will show up in the 'base' folder your in.
+	* IE, if you load Code from the C++ file then .vscode(If this is the first time running your code) will populate within C++ and not the proper folder your code is in.
+	* So make a new folder, or if you have it already, just right click the new folder and click the option for opening that folder. Bam, problem solved
+		** CTRL+SHIFT+B Compiles everything, if it needs to, then builds the executeable for you to run.
+		** 'Run" in the top right will compile and run your code instantly.
+		** 'Debug' option does the same but with the debugger.
+-<iostream> is needed for the print function
+-std::endl; places a new line character.
+-// Adds comments
+-/*
+    Adds multi-line comments
+*/
+-Prefer to use single qoutes when using single chars in cout or the like.
+-Double qoutes signals a string, single qoutes signal single char.
+-An early return (Before the end of a function) acts like the end of a function.
+-The main function is the entry point of the program.
+-The return function at the end of a main function is to let you know if the program ran successfully. You know by the 'code'
+ you used as the return.
+-3 types of errors (Compile time, Runtime, Warnings)
+	-Compile time errors prevent the code from compiling
+	-Runtme errors compile just fine but something in the code doesn't work like you wanted
+	-Warnings. No really a problem, but maybe redundant things or minor changes VSC thinks you should change.
+ -Microsoft compiler(cl.exe) can only be used if you open a powershell cmd-line. Then open VS Code through the command line.
+	-Needs a powershell terminal to run cl.exe otherwise your stuck using G++ or Clang++
+
+PROCESSOR:
+	-#includes
+	-Macro Defines would be the 'global variables'
+		* #define SYSTEM_NAME "Shadow"
+		* NO = OR ;
+		* Part of the Preprocessor along with any #includes.
+			** Basically anything with # gets preprocessed first.
+		* These are considered Legacy Code now.
+		* Are only used within the file, unless you use an #include. Then you can use the #defines in the #included file, but not vise-versa.
+	-Conditional compilations are #ifdef, #ifndef, and #endif
+		* These are used for making conditions inwhich something will or won't compile.(There are more than these, fyi)
+			** #ifdef DEBUG checks if we have #define DEBUG (#if defined(DEBUG))
+			** #ifndef does the oposite of #ifdef (#if !defined(DEBUG))
+			** #if 0 prevents anything below it until the #endif statement from compiling.
+				** Can change the 0 to 1 to allow the code. Quick comment out areas with paragraph comments.
+			
+
+
+VARIABLES:
+	- 'const var {}' makes a permanent variable that can't be modified.
+		** This doesn't mean that the intializer is const, just that once the variable is set it won't be able to be changed later.
+	-You can initialize variables of the same type on the same line
+		*IE, int y{}, x{}, z{}
+	-5 Different types of Initializations
+		*It's the equal sign. Equal means to copy. No equal means direct.
+		*This means int widht = 5; is COPYING the number 5. So if I had another variable there instead.
+		* int width = height; this would copy the other variable and assumably change the other variable too if you change this one.
+		* int width {height} is taking the 'height' variable and 
+
+		-Default (int width;)
+			*This is so you can allocate the memory and set the variable later.
+		-Copy (int width = 5;)
+			*This is for when you want to allocate the memory and set the variable at the same time.
+		-Direct (int width (5);)
+			*This deals with class types. Don't know about this yet *****
+		-Direct-List (int width {5}; OR int width = {5};)
+			*Used to have a list of values, not just a single value. Also works with all kind of conditions
+			*This also helps to prevent non-same-type values from being put together. IE, int width = 5.6; comes out as 5 where int width {5.5}; comes back as a diagnostic error.
+			*The above is called non-narrowing conversions.
+		-Value (int width {};)
+			*This sets the list to a zero value or what ever is closest to zero. IE, string would be "" boolean would be TRUE and so on
+		
+		*** List Initialization is the prefered method. As it doesn't do narrow conversions, and allows for more than one possible value saving on room later. ***
+		
+		*** Goes without saying, but don't initialize variables that don't get used. But if you do, here's what to do.
+		-Maybe_used (When you set a variable from a global set, but don't plan to actually use it.)
+			* [[maybe_unused]] gets put before the var typing for each variable you 'might not' use.
+			* Actually very useful.
+
+		- Initialize and Assignment are different. Initialize is when you make the variable. Assignment is when you give it a value.
+			* [[maybe_unused]] int width; This is Initializing.
+			* [[maybe_unused]] int width {5}; This is Initializing while assigning a value.
+			* Intialized is when it's given a known value at point of definition. (When you know what the value should be already.)
+				*This is also the slowest way of doing things, but until projects are too big it's best to do it this way.
+			* Assignment is when it's given a known value after definition. (When you want to alter an already known, or unknown, value to a desired value.)
+			* Uninitialized is when it's defined but not with a known value (Most common when getting user input or the like)
+
+NUMERAL SYSTEMS:
+	- You can use single qoutation marks to separate long numbers like a comma.
+	- Decimal (Base 10)
+		* std::dec
+	- Binary (Base 2)
+		* std::cout << std::format("{:b}\n", 0b1010) - Add a # before the b to get 0b formated binary.
+		* std::println("{:b} {:#b}", 0b1010, 0b1010) - Same as above but now it does both types in ones shot.
+		* std::bitset<amount> var{0bnum}
+			** Need the <bitset> library
+			** If you do std::cout <<  std::bitset<4>{0b1010} It will create a temporary object
+			** Otherwise you need to create const' that can't be changed.
+		* Put 0b before number.
+		* 10 is Binary. Easy. 0000 = 0, 0001 = 1, 0010 = 2, 0011 = 3, 0100 = 4
+		* This will take a while to learn.
+	- Hexadecimal (Base 16)
+		* std::hex
+		* Put 0x before number.
+		* 0-9 A-F
+		* 1 digit in hex equals 4 bits in binary. So 2 digits equals a full byte.
+		* Hex is easier to read then Binary, so memory addresses are usually in Hex.
+	- Octal (Base 8)
+		* std::oct
+		* Put 0 infront of number to get Octal
+		* However, std::cout prints in Decimal so if you put 012 it comes out as 10. Since Octal is 0-7
+
+<IOSTREAM>:
+	- << sends commands to the prompt.
+	- >> receives commands from the prompt.
+	- std::endl flushes the prompt queue. Which can be slow. So instead use "\n" We know this from Lue mostly.
+		*Flushing the prompt manually might have its uses down the road. Will have to look into this.
+	- cout and cin use FIFO. So when you ask the user for an input, like the following code:
+		* std::cout >> "Enter two numbers: ";
+		  std::cin << x;
+		  std::cin << y;
+
+		*This will let you handle it one of two ways.
+			1) You can enter both values on the same line seperated with a space.
+			2) You can add each value one at a time followed by the enter key.
+			*Either of these will work since cin is using a buffer that uses SPACES as it's seperator, well and new lines.
+	- Whitespaces
+		* Unlike Lua you can use whitespaces in your code easier.
+		* IE, std::cout << "Hello "
+						   " world!" << '\n';
+		* Will actually work. You just can't remove the middle set of qoutations. That would compile into an error.
+		* This also means that whitepsacing in code is all for visual effect.
+		* IE, 
+		*	#include <iostream>
+		* 	int main(){std::cout << "Hello world"<<'\n';return 0;}
+
+		* Is the same as:
+			* #include <iostream>
+			* int main() {
+				std::cout << "Hello World" << '\n';
+				return 0;
+			}
+
+		* But the latter looks better. (Remember that a single whitespace is still needed between keywords)
+
+	- "editor.wordWrap" and "editor.rulers" are settings within "settings.json" that can be altered to your coding styles.
+		* Wordwrap can't really be adjusted. It goes by your window size.
+		* Rulers can be set to what ever you need, I like to have it at 90 which gives me room for two windows and the index.
+	- Shift+Alt+F formats all the code on the current page to whatever language specs your using.
+
+EXPRESSIONS/STATEMENTS:
+	-An Expression is when you want to figure out a value.
+		* int x {5+6};
+		* int x {5};
+		* int x {y};
+		* All of these are Expressions.
+	-A Statement is when you want to preform an action.
+		* return 0;
+		* int
+		* std::cout << "Hello World" << '\n';
+		* These are all statements.
+	** Both of the above are simple Expresions/Statements. They get more complex. **
+
+FUNCTIONS:
+	- Unlike Lua and Python you can't nest fuctions within another function.
+	- Function Header
+	- Function Body
+	- main() also has to have a return value of an int. Normally 0
+	- main() can not be called by anything. The compiler calls it at the start of the program.
+	- main() isn't always the first to fire. Variables are set first, if they have a function call initiated then that other function is first, still can't call on main() though.
+	- main() is always at the bottom of the code, unless you figure out a reason to put it higher.
+	- return in main() returns 0 if successful. If you want an unsuccessful option then you need to #include <cstdlib> for EXIT_SUCCESS and EXIT_FAILURE
+	- Unless the function type is VOID you MUST return a value, anything other than it's actual return type and there will be an error. DON'T FORGET THE RETURN TYPE!
+	- VOID functions do not return a value. When using cin or cout they need to have something return a value. Either hardcoded numbers, or text. Or a variable returned from a function, or just a variable on its own.
+	- Function Parameters are the variables the function initiates and uses within.
+	- Function arguments are the variables the caller sends to the variables the function makes for internal useage. VERBOSE
+	- You should have the same amount of Arguments as Parameters, generally speaking.
+	- You don't just need to send variables. You can use another function in place of an Argument. An argument is basically anything that provides a 'literal' Int, Str, Boolean.
+	- When forward declaring, or using a function you must have the same amount of paras as args, but not vise-versa.
+
+	** Forward declaration.
+		* If you end up placing a function a head of the function that needs it. You can Forward Declare said function. Go above the function that needs it and place the needed function as an expression itself. 
+		* IE, int input(*paras);
+	
+LOCAL VARIABLES:
+	- Variables made within a function are within that function only. So you can have a bunch of variables that are x or y as long as they aren't in the same function.
+	- They only last from initialization till the last curly brace.
+
+TEMPORARY OBJECTS:
+	- Return by value (the return at the end of a function, sometimes with a variable) when used within a function to return a value, will return a temporary object. An invisible variable that temporarily holds the value for the current expression.
+
+ADDING FILES:
+	- In the tasks.json file you can add "${fileDirname}\\**.cpp" to each of the compiler options to get all .cpp files to be compiled at once. Probably the best idea.
+	- You can use functions from other files with a simple forward declaration as if the function was made at the end of this file.
+	- You can use the #include for .cpp files but it could cause naming errors.
+
+	NAMESPACES:
+		- Even though files are different you can't have the same name on both. IE, each has a function named 'add()' This would cause a compile/linker error and not run.
+		- All identifiers must have different names within a namespace scope.
+		- Anything not within a namespace is within the 'global scope' whether in another file or not. If compiled and linked within the same project it is the same scope.
+		- :: is the operator to use something within a namespace scope.
+			* So you use #include <file.file>
+			* Then you can either 'using namespace <namespaceWithinFile>;
+			* Or <namespaceWithinFile>::<function>()
+			* Using the namespace prefix and :: is the best way to avoid identifier collisions. Remember, if you remove <namespace>:: from your functions it might get confused with another function of the same name within the file, or another linked file. USE THE NAMEPSACE PREFIX JACKASS!.
+
+	HEADER FILES:
+		- Used mainly for forward declarations (#defines, function declarations, global variables.)
+		- Do not add header.h files to tasks.json for compiling. They are specifically used with the files that need the information within them.
+		- Headers should be included in the source file. IE, if a header has a function declaration made within the func.cpp file. Then place that header int he func.cpp file as well. That way if you mess up on syntax or the like it'll catch the error on compile and not link, saving time compiling.
+		- Use "" for header files and <> for header files that don't belong to you.
+			* If you use <> the preprocessor will look within the compiler locations for header files and not the source folder your coding in.
+			* Use "" when you are including a header you've made yourself.
+		- You can use the direct path "../foldername/header.h" or "foldername/header.h"
+			* But it's advised to put "-I./source/includes" in the tasks.json file.
+		- You've tried. No, putting #include <iostream> into a header.h file doesn't work. Stop trying already.
+		- Header guards need to be added as such:
+			* #ifndef FILE_NAME_HEADER_FILE_H
+			* #define FILE_NAME_HEADER_FILE_H
+			* // CONTENT
+			* #endif
+			*
+			* OR #pragma once (Which is apparently what others prefer)
+
+DEBUGGING:
+	- What can you say about debugging? Your a pro. But find some C++ loggers either as examples for making one, or just to use. The added bonus of logging to a seperate file is very useful.
+	- "-ggdb" in the 'args' section of tasks.json for debug version.
+	- "-02", "-DNDEBUG", in the 'args' section of tasks.json for release version.
+	- CTRL+SHIFT+P - C/C++: Add Debug Configuration - g++ build and debug active file
+		* "stopAtEntry": true
+
+DATA TYPES:
+	- VOID
+		* Means no type.
+		* Can't be instantiated. (void x{5}; Or any variant won't work)
+		* Incomplete type
+		* Used mostly for functions that don't return anything.
+		* Void can be used as a Parameter in a function to show it doesn't take any paras, mainly a C coding style, not prefered in C++ but will work.
+	- Bits and Bytes
+		* 1 bit is either 0 or 1 (2)
+		* 2 bits is 4 combinations of 1 and 0.
+		* Each bit added adds an extra 1 or 0 the system can use. Which means the combination of 1's and 0's grows by twice as much as the previous bit.
+		* There are 8 bits in 1 byte (For C++ at least.)
+		* Mathmatically shown as 2n
+			** 2 to the power of. Dumbass, So 5 bits would be 2 to the power of 5.
+		* Int types use 1 bit for the negative or positive sign. So a 5 bit would only use 4 bits technically, but we still use the other 1 bit for a sign type.
+		* 0 counts as the positive side of it all. So 1-15 positive is 0-15 and the negative side would be -1 - -16.
+		* Sizes: (8bit=1byte)
+			   Name      		Minimum size     	Typical size
+			** bool				1 byte				1 byte
+		Chars:
+			** char				1 byte (exactly)	1 byte
+			** wchar_t			1 byte				2 or 4 bytes
+			** char8_t			1 byte				1 byte
+			** char16_t			2 bytes				2 bytes
+			** char32_t			4 bytes				4 bytes
+		Integers:
+			** short			2 bytes				2 bytes
+			** int				2 bytes				4 bytes
+			** long				4 bytes				4 or 8 bytes
+			** long long 		8 bytes				8 bytes
+		    ** float			4 bytes				4 bytes
+			** double			8 bytes				8 bytes
+			** long double 		8 bytes				8, 12, or 16 bytes
+		Pointers:
+			** std::nullptr_t	4 bytes				4 or 8 bytes
+		* sizeof() to find how much memory something is using,
+	- Overflow is when you place data into a data type of the wrong size.
+		* IE, put 146 into a regular 8 bit int type would cause undefined behavior.
+			** This is obviously bad when we want to track all the data to a T. 
+			** So use a bigger data type if you think it's not big enough.
+		- Unsigned
+			* For an integer this means it can only take non-negative numbers
+			* If you overflow an unsigned int it will divide the number by the largest number in the type plus 1 (IE, 1 byte would be 255+1) and the remainder (Not the whole number but the decimal) will be placed in the variable.
+				** Thus putting 280 into a 1 byte unsigned int would result in the value being 24.
+				** This does a wrap around effect, so anything that goes beyond the type size gets added to the variable, but if you use a negative number it'll go the opposite way and start 'counting down'
+				** If you did 280 then switched the variable to -1 it would show 279
+			* Fixed-width integers:
+			(#include <cstdint>)
+				Name			Fixed Size				Fixed Range								Notes
+				std::int8_t		1 byte signed			-128 to 127					Treated like a signed char on many systems. See note below.
+				std::uint8_t	1 byte unsigned			0 to 255					Treated like an unsigned char on many systems. See note below.
+				std::int16_t	2 byte signed			-32,768 to 32,767	
+				std::uint16_t	2 byte unsigned			0 to 65,535	
+				std::int32_t	4 byte signed			-2,147,483,648 to 2,147,483,647	
+				std::uint32_t	4 byte unsigned			0 to 4,294,967,295	
+				std::int64_t	8 byte signed			-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807	
+				std::uint64_t	8 byte unsigned			0 to 18,446,744,073,709,551,615
+			* int8_t uses chars not ints to store. If you type in a 3, it won't come out as a 3 when you use the variable. Use static_cast<>() to make sure it stays as a 3
+			* Fast and Least integral types:
+				** std::int_fast(8-32) std::int_least(8-32) ** add a u before int and you get the unsigned versions
+				** The above checks the current operating system for either the slowest or fastest int type of the specified bytes
+		- Prefer int when the size of the integer doesn’t matter (e.g. the number will always fit within the range of a 2-byte signed integer). For example, if you’re asking the user to enter their age, or counting from 1 to 10, it doesn’t matter whether int is 16-bits or 32-bits (the numbers will fit either way). This will cover the vast majority of the cases you’re likely to run across.
+		- Prefer std::int#_t when storing a quantity that needs a guaranteed range.
+		- Prefer std::uint#_t when doing bit manipulation or well-defined wrap-around behavior is required (e.g. for cryptography or random number generation).
+		- Avoid the following when possible:
+			** short and long integers (prefer a fixed-width integer type instead).
+			** The fast and least integral types (prefer a fixed-width integer type instead).
+			** Unsigned types for holding quantities (prefer a signed integer type instead).
+			** The 8-bit fixed-width integer types (prefer a 16-bit fixed-width integer type instead).
+			** Any compiler-specific fixed-width integers (for example, Visual Studio defines __int8, __int16, etc…)
+	- Floating Point Numbers:
+		- Any number with a decimal is a floating numbers.
+		- float f{5.5f}; (Need to add the f so it knows for sure it's a float, without the f it comes out as a double)
+		- double d{5.5}; (As here there is no f, there for a double.)
+		- long double ld; (Advised to not use this one.)
+		- Using the right floating point number means more accuracy.
+		- Doubles are more accurate than floats when it comes to bigger numbers.
+		- std::cout assumes all floating numbers have 6 significant digits.
+			* To change this us std::setprecision(amount)
+			* This will make it as accurate as you need for printing.
+			* Output manipulators don't reset. So once changed it's changed until program terminates or user changes again.
+	- Booleans:
+		- bool b{true}; (Defaults to false if empty)
+		- bool b{!false}; (This is the same as the above. ! switches the boolean.)
+		- Booleans are actually stored as a 1 or 0.
+			* This is why we need the std::boolalpha to convert it to true or false for the print.
+			* std::noboolalpha to shut it off again
+				** OUTPUT MANIPULATORS STAY ON UNTIL OTHERWISE SHUT OFF OR CODE TERMINATED.
+			* These both work for cout and cin. Which is needed when looking for true or false as answers in a prompt.
+		- Booleans usually have is or has at the start of the variable.
+		- == returns a Boolean value if in a function return.
+		- An if statement is just a canditional expression, the evaluates to a boolean!
+
+IF STATEMENTS:
+	- if (condition)
+	-	true_statement;
+	- else if (condition)
+	- 	true_statement;
+	- else
+	- 	false_statement;
+	- OPERANDS: (Unlike lua where you need = for everything if statement.)
+		* ==
+		* >
+		* <
+		* If these are used in if statements or return statements they are considered boolean answers. Either true or false.
+		* Cuts the need for an if/else block with a single return.
+
+CHARS:
+	- char only stores a single char, hence the name.
+		* It stores the char as an ASCII number.
+		* You can technically store the ASCII number instead but it's not advised.
+			** Thats what ints are for!
+		* Don't use '' That comes out as a different ASCII number than what you thought.
+	- std::cin.get() Gets whitespaces where std::cin by iteself doesn't.
+	- char can hold ints signed -128 - 127 unsigned 0 - 255.
+
+\ COMMANDS:
+	- \a	Makes an alert, such as a beep
+	- \b	Moves the cursor back one space
+	- \f	Moves the cursor to next logical page
+	- \n	Moves cursor to next line
+	- \r	Moves cursor to beginning of line
+	- \t	Prints a horizontal tab
+	- \v	Prints a vertical tab
+	- \’	Prints a single quote
+	- \”	Prints a double quote
+	- \\	Prints a backslash.
+	- \?	Prints a question mark.
+	- \(number)	Translates into char represented by octal
+	- \x(number)	Translates into char represented by hex number
+		*These all need single qoutes if by themselves. 
+
+TYPE CONVERSAION/STATIC_CAST:
+	- A function that takes a double para but is given an int arg converts the int to a double.
+		* Though std::cout will convert it back into an int if the number after the decimal is a zero.
+		* This is implicit type conversion
+		* This doesn't change the originals actual value, it makes a new value out of the int and makes it a double, which keeping the old input (technically)
+	- static_cast<type>(arg)
+		* Take a double/float (arg) and turn it into an int <type> Or the otherway around.
+		* This is called explicit type casing.
+
+CONSTEXPR:
+	- Constant expressions.
+		* There are two different kinds. Compile time and Runtime
+			** Compile time expressions are those that 'dont change' 
+			** IE, literals. A variable being set to 5 from the start. Constant Expression.
+			** There are varous ways an expressions can be constant or non-constant.
+			** Runtime Constant are the same but instead of being 'constant' right at compile the compiler waits until runtime to make them constant.
+			** Compile time constants make compiling faster.
+			** Runtime constants makes runtime faster, though compile time constants are better so you get all warnings and errors right away.
+			
+	- Variables.
+		* Use 'static' on a global variable to make it an internal linkage.
+			** IE, this will overshadow any variable of the same now in the global scope, or in any other header file that may be connected.
+			** Once that variable, or functions is made static it won't be able to be used in another file, even if placed in a header and with a forward declaration.
+		* Use 'extern' to make the global variables on another file work within this the current file you are on.
+			** Works like a declaration, but you have to put 'extern' infront of each variable at each definition/declaration.
+			** If your forward declaring a constexpr variable you need to use 'extern const' instead. The compiler will make it a runtime compile instead.
+			
+		* const int var{5}; Has to be like this or it doesn't count as a const variable.
+		* constexpr int var {5}; Will flag as an error if it isn't a constant expression.
+			** Best use case is something like the following
+				constexpr int age {age};
+				- This checks the whole expression line to see if it's a constant expression. IE, if age is a const.
+		* functions are run at runtime, not compile time. So they can't be const's. 
+		* const var {1.5} won't work const var {1} will. Remember decimal numbers aren't technically 'literals'. Whole numbers are. You can't express 1.5 in binary. It's three different expressions 1 . 5.
+		* constexpr var {1.5} however will work.
+		* const vs constexpr
+			- const means that the value of an object cannot be changed after initialization. The value of the initializer may be known at compiletime or runtime. The const object can be evaluated at runtime.
+			- constexpr means that the obeject can be used in a constant expression. The value of the initiailizer must be known at compile time. The constexpr object can be evaluated at runtime or compiletime.
+		* If the whole expression is for sure a const, use constexpr, making it a compiletime constant
+		* If the initializer isn't a const then use const, making it runtime constant
+		
+STD::STRING:
+	- std::String and std::String_view default to C-Style literals.
+		* You need the namespaces to acces the suffix'
+			** using namespace std::string_literals;
+			** using namespace std::string_view_literals;
+		* std::string vars can be changed to String Literals with the s suffix
+			** IE, std::cout << "goo\n"s;
+		* std::string_view vars can be change to String_view literals with the sv suffix
+			** IE, std::cout << "foo\n"sv;
+	- std::string can't be a constexpr but std::string_view can.
+	- #include <string>
+	- std::string name {"Shadow"};
+		* Can then alter the var how ever you want, longer string, shorter string, no string.
+		* std::getline(std::cin >> std::ws(?), var);
+			** std::ws removes any leading whitespaces from the string we are getting. If we don't use std::ws we will inherently grab any /n or whitespaces still in std::cin from any previous call we made to it.
+			** std::ws is not persistant unlike the other cout/cin manipulators. So you have to use it everytime you call std::getline()
+		* var.length() shows how many characters, minus the NULL character
+			** If you want to assign this to an int best to use int length { static_cast<int>(name.length()) } since it's garaunteed to be unsigned.
+	- Wont' accept std::string_view as a para.
+		* IE, void printString(std::string str)
+			  { std::cout << str << '\n';} 	
+			  std::string_view s{"Hello world"};
+			  printString(s)
+		* The above won't work.
+		* We can get around this by placing the std::string_view var within a std::string var before sending it into printString()
+		* Or by passing it into printString(static_cast<std::string>(s)); like so.
+	- Will accept std::string as an initializer though.
+		* IE, std::string_view s{"Hello world!"}; std::string a{s}; is allowed.
+	
+STD::STRING_VIEW:
+	- Viewing a string means you might run into the std::string_view var being destroyed. std::string_view views the intialized value of what you intialized std::string_view with. So if it changes, IE, you used a std::string and then intialized std::string_view on that, then right after you changed the std::string but want to call on the std::string_view too. The std::string_view will most likely cause an error since it's original 'window' has been changed or destroyed.
+		* This means that if the std::string var has the same memory it had before, just the value has changed then std::string_view will be fine.
+		* However if the memory allocated for std::string has grown, or shrunk then the address has changed, the address that std::string_view was viewing.
+		* std::string_view still views the old address while std::string now has a new one.
+		* There is also a possible problem that std::string keeps the same memory allocated but the string size changes. std::string_view could either come back as a smaller version of std::string because it got larger, so you wont get the whole string. Or std::string has shrunken so std::string_view gets the wnole string and what ever other garbage was left in the rest of the allocated memory. IE, parts of the old std::string.
+		* To get around this just revalidate the std::string_view by reassigning it back to the std::string you just changed.
+			** IE, when you change a std::string change the std::string_view viewing it too.
+	- std::string_view can't be intialized with a std:string literal (s) but can be with a c-style literal, std::string_view literal, or all three of the string types objects as long as they outlive the use of the std::string_view variable.
+		* std::string literals are used and then destroyed instantly.
+	- #include <string_view>
+	- std::string_view s{"Hellow world"};
+	- Prefer this over std::string if you don't want to change the string at any point.
+	- Will accept any other type of string as a para. C-style, std::string, or even itself std::string_view
+	- std::String_view shouldn't be used as a return for functions except in two cases. Since in other cases the std::string_view would be viewing something that has been destroyed.
+		** First is if the return of the function is returning C-style instead of std::string vars. Since c-style literals last the entire program.
+		** second is if it's within the scope of a function call.
+			- IE, std::cout << firstAlphabetical(a,b) << '\n'; Where a and b are strings being sent to the function as std::string_view and returning as such. Since a and b last the scope of the program std::string_view stays valid
+	- str.remove_suffix/prefix(amount) removes chars from the string altering it slightly for you.
+		** This alters it, so to reset it you need to put the var back to normal. IE, str = originalString
+	
+PREFIX INCREMENT/DECREMENT:
+	- ++ and --
+		** If placed before the int it will add 1 to the original var thus making a 1 into a 2, and will set the new var as 2.
+		** If placed after the var then the original will be incremented/decremented but the new one will be set to what the old one was.
+
+CONDITIONAL OPERATOR:
+	- This is basically a short hand for an if statement within an initializer (Conditional Statement)
+		** int x {( 3 > 4 ) ? 3 : 4 );
+		** This will check if 3 is greater than 4, if not it sets x to 4. The ? Makes it an 'if', and the : is the else.
+		
+SHORT CIRCUIT EVALUATION:
+	- && Starts left to right. If the left operand is false then the evaluation is false.
+	- || Starts on the left as well. If the left is true then the rest must be as well.
+	
+NAMESPACES:
+	- namespace Foo
+	{
+		// contents.
+	}
+	- You use namespace::function() to call a function from a namespace you made.
+		* If your inside your namespace with the function you want you just call the function.
+			** If you want the function outside the namespace you use ::function() to check outside the name space then check globally if it can't find it just outside the name space.
+				** Or use namespace::function() if you know exactly what namepsace function you want.
+	- With forward declaration in header files you need to add the namespace with the function.
+		** namespace NameSpace
+			{
+				int add(int y, int x);
+			}
+		* You can also add onto namespaces in headers.
+			** IE, if you wanted a variable that wasn't previously defined. Add it in the header with the info you want.
+	- You can nest namespaces inside each other.
+		* Either with namespace NameSpace::NameSpace2 or just with a namespace in a namespace.
+	- You can use an alias when calling calling an alias.
+		* IE, namespace Alias Namespace::Namespace2;
+	- Namespaces are basically naming collision preventers. That's what they are for.
+	- Namespaces are also used for Global Variables. Instead of putting them outside a block in a file, make a namespace for them.
+	- Inside a nested block you can't have access to a variable outside the block unless passed in via a function or a Namespace global variable.
+		* If it's a global varaible you can use ::varaible.
+		
